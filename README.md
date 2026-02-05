@@ -2,8 +2,8 @@
 
 ---
 
-<h2>👋🏻 팀 소개</h2>
-<h3>📌 **Team 차곡차곡**</h3>
+## 👋🏻 팀 소개
+### 📌 **Team 차곡차곡**
 
 <table align="center">
   <tr>
