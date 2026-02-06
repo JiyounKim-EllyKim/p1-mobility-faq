@@ -100,12 +100,22 @@ with col3:
 left_col, right_col = st.columns([1, 2])
 df = st.session_state.search_result
 
-# --- 왼쪽 영역: 조회 결과 리스트 & 페이지네이션 ---
+# --- 왼쪽 영역: 조회 결과 리스트 ---
 with left_col:
     st.subheader(f"🔍 검색 결과 ({len(df)}건)")
+    # 1. 필터 UI (조회 결과 리스트 바로 위나 적절한 위치에 배치)
+    sort_option = st.radio("", ["이름순▼", "이름순▲"], horizontal=True)
     st.write("---")
 
     if not df.empty:
+        # ---------------- 여기에 필터 정렬 로직 추가 ----------------
+        if sort_option == '이름순▼':
+            df = df.sort_values(by='name', ascending=False)
+        else: # 이름순▲
+            df = df.sort_values(by='name', ascending=True)
+        # --------------------------------------------------------
+
+        # 2. 페이지네이션 설정
         items_per_page = 5
         total_pages = min(math.ceil(len(df) / items_per_page), 5)
         start_idx = (st.session_state.page - 1) * items_per_page

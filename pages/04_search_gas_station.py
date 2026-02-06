@@ -24,7 +24,7 @@ if "current_page" not in st.session_state: #리스트에서 현재 탐색중인 
 
 
 # --- 레이아웃 ---
-st.title("⛽ 주유 Mate")
+st.title("⛽ Gas Station Mate")
 st.write("---")
 
 left_col, right_col = st.columns([1, 2])
@@ -32,9 +32,23 @@ stations = st.session_state['oil_results']
 
 # --- 왼쪽 영역: 검색 결과 리스트 ---
 with left_col:
-    st.subheader(f"🔍 주변 주유소 ({len(stations)}건)")
-    st.write("---")
+    st.subheader(f"🔍 검색 결과 ({len(stations)}건)")
+
     if stations:
+        # 정렬 라디오 버튼 (이 코드가 subheader 바로 아래 있어야 화면에 뜹니다)
+        sort_option = st.radio("정렬 방식", ["가까운순▼", "가격낮은순▼", "이름순▲", "이름순▼"], horizontal=True)
+        st.write("---")
+
+        # ---------------- 2. 필터 정렬 로직 (stations 리스트 직접 정렬) ----------------
+        if sort_option == '가까운순▼':
+            stations.sort(key=lambda x: x.distance)
+        elif sort_option == '가격낮은순▼':  # 주유소 앱 특성상 이름보다 가격이 중요하므로 예시로 추가
+            stations.sort(key=lambda x: x.price)
+        elif sort_option == '이름순▲':
+            stations.sort(key=lambda x: x.station_name)
+        elif sort_option == '이름순▼':
+            stations.sort(key=lambda x: x.station_name, reverse=True)
+
         total_items = len(stations)
         total_pages = math.ceil(total_items / ITEMS_PER_PAGE)
 
